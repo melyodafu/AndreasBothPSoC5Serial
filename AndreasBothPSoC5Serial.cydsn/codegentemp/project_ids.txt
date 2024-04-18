@@ -1,0 +1,7 @@
+C:\UserData\z004c8dn\OneDrive - Siemens AG\Dokumente\PSoC Creator\AndreasBothPSoC5Serial\AndreasBothPSoC5DAQ.cydsn\AndreasBothPSoC5DAQ.cyprj|22c15c8b-f4c2-4b50-b652-fb505fff3e4b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|deaa586e-28f5-4bae-8254-5423dc0a2a7e
+C:\UserData\z004c8dn\OneDrive - Siemens AG\Dokumente\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|add29b04-b2d2-4cb0-b8d1-736276918306
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|51465ab0-1e57-40f5-a420-f62a92fa4359
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|4ebef611-ef91-48d1-b220-498dde8467b6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|66c63fd8-2f87-4bd4-91c5-75abb52b5bc3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|d40feed3-aac8-4fc5-b7c0-ead6d5830565

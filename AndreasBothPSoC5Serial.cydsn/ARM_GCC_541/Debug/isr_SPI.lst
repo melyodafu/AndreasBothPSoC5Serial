@@ -1,0 +1,2043 @@
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"isr_SPI.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_SPI_Start,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_SPI_Start
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_SPI_Start, %function
+  25              	isr_SPI_Start:
+  26              	.LFB63:
+  27              		.file 1 "Generated_Source\\PSoC5\\isr_SPI.c"
+   1:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+   2:Generated_Source\PSoC5/isr_SPI.c **** * File Name: isr_SPI.c  
+   3:Generated_Source\PSoC5/isr_SPI.c **** * Version 1.70
+   4:Generated_Source\PSoC5/isr_SPI.c **** *
+   5:Generated_Source\PSoC5/isr_SPI.c **** *  Description:
+   6:Generated_Source\PSoC5/isr_SPI.c **** *   API for controlling the state of an interrupt.
+   7:Generated_Source\PSoC5/isr_SPI.c **** *
+   8:Generated_Source\PSoC5/isr_SPI.c **** *
+   9:Generated_Source\PSoC5/isr_SPI.c **** *  Note:
+  10:Generated_Source\PSoC5/isr_SPI.c **** *
+  11:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+  12:Generated_Source\PSoC5/isr_SPI.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC5/isr_SPI.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC5/isr_SPI.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC5/isr_SPI.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+  17:Generated_Source\PSoC5/isr_SPI.c **** 
+  18:Generated_Source\PSoC5/isr_SPI.c **** 
+  19:Generated_Source\PSoC5/isr_SPI.c **** #include <cydevice_trm.h>
+  20:Generated_Source\PSoC5/isr_SPI.c **** #include <CyLib.h>
+  21:Generated_Source\PSoC5/isr_SPI.c **** #include <isr_SPI.h>
+  22:Generated_Source\PSoC5/isr_SPI.c **** #include "cyapicallbacks.h"
+  23:Generated_Source\PSoC5/isr_SPI.c **** 
+  24:Generated_Source\PSoC5/isr_SPI.c **** #if !defined(isr_SPI__REMOVED) /* Check for removal by optimization */
+  25:Generated_Source\PSoC5/isr_SPI.c **** 
+  26:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+  27:Generated_Source\PSoC5/isr_SPI.c **** *  Place your includes, defines and code here 
+  28:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************/
+  29:Generated_Source\PSoC5/isr_SPI.c **** /* `#START isr_SPI_intc` */
+  30:Generated_Source\PSoC5/isr_SPI.c ****     #include "project.h"
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 2
+
+
+  31:Generated_Source\PSoC5/isr_SPI.c ****     
+  32:Generated_Source\PSoC5/isr_SPI.c ****     #define BYTE_SIZE 8
+  33:Generated_Source\PSoC5/isr_SPI.c ****     
+  34:Generated_Source\PSoC5/isr_SPI.c ****     extern volatile uint16 gSpiRxBuffer;
+  35:Generated_Source\PSoC5/isr_SPI.c **** /* `#END` */
+  36:Generated_Source\PSoC5/isr_SPI.c **** 
+  37:Generated_Source\PSoC5/isr_SPI.c **** #ifndef CYINT_IRQ_BASE
+  38:Generated_Source\PSoC5/isr_SPI.c **** #define CYINT_IRQ_BASE      16
+  39:Generated_Source\PSoC5/isr_SPI.c **** #endif /* CYINT_IRQ_BASE */
+  40:Generated_Source\PSoC5/isr_SPI.c **** #ifndef CYINT_VECT_TABLE
+  41:Generated_Source\PSoC5/isr_SPI.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  42:Generated_Source\PSoC5/isr_SPI.c **** #endif /* CYINT_VECT_TABLE */
+  43:Generated_Source\PSoC5/isr_SPI.c **** 
+  44:Generated_Source\PSoC5/isr_SPI.c **** /* Declared in startup, used to set unused interrupts to. */
+  45:Generated_Source\PSoC5/isr_SPI.c **** CY_ISR_PROTO(IntDefaultHandler);
+  46:Generated_Source\PSoC5/isr_SPI.c **** 
+  47:Generated_Source\PSoC5/isr_SPI.c **** 
+  48:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+  49:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_Start
+  50:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+  51:Generated_Source\PSoC5/isr_SPI.c **** *
+  52:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+  53:Generated_Source\PSoC5/isr_SPI.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  54:Generated_Source\PSoC5/isr_SPI.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  55:Generated_Source\PSoC5/isr_SPI.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  56:Generated_Source\PSoC5/isr_SPI.c **** *  interrupt controller.
+  57:Generated_Source\PSoC5/isr_SPI.c **** *
+  58:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:  
+  59:Generated_Source\PSoC5/isr_SPI.c **** *   None
+  60:Generated_Source\PSoC5/isr_SPI.c **** *
+  61:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+  62:Generated_Source\PSoC5/isr_SPI.c **** *   None
+  63:Generated_Source\PSoC5/isr_SPI.c **** *
+  64:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+  65:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_Start(void)
+  66:Generated_Source\PSoC5/isr_SPI.c **** {
+  28              		.loc 1 66 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  67:Generated_Source\PSoC5/isr_SPI.c ****     /* For all we know the interrupt is active. */
+  68:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_Disable();
+  38              		.loc 1 68 0
+  39 0004 FFF7FEFF 		bl	isr_SPI_Disable
+  69:Generated_Source\PSoC5/isr_SPI.c **** 
+  70:Generated_Source\PSoC5/isr_SPI.c ****     /* Set the ISR to point to the isr_SPI Interrupt. */
+  71:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_SetVector(&isr_SPI_Interrupt);
+  40              		.loc 1 71 0
+  41 0008 0448     		ldr	r0, .L2
+  42 000a FFF7FEFF 		bl	isr_SPI_SetVector
+  72:Generated_Source\PSoC5/isr_SPI.c **** 
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 3
+
+
+  73:Generated_Source\PSoC5/isr_SPI.c ****     /* Set the priority. */
+  74:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_SetPriority((uint8)isr_SPI_INTC_PRIOR_NUMBER);
+  43              		.loc 1 74 0
+  44 000e 0720     		movs	r0, #7
+  45 0010 FFF7FEFF 		bl	isr_SPI_SetPriority
+  75:Generated_Source\PSoC5/isr_SPI.c **** 
+  76:Generated_Source\PSoC5/isr_SPI.c ****     /* Enable it. */
+  77:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_Enable();
+  46              		.loc 1 77 0
+  47 0014 FFF7FEFF 		bl	isr_SPI_Enable
+  78:Generated_Source\PSoC5/isr_SPI.c **** }
+  48              		.loc 1 78 0
+  49 0018 00BF     		nop
+  50 001a 80BD     		pop	{r7, pc}
+  51              	.L3:
+  52              		.align	2
+  53              	.L2:
+  54 001c 00000000 		.word	isr_SPI_Interrupt
+  55              		.cfi_endproc
+  56              	.LFE63:
+  57              		.size	isr_SPI_Start, .-isr_SPI_Start
+  58              		.section	.text.isr_SPI_StartEx,"ax",%progbits
+  59              		.align	2
+  60              		.global	isr_SPI_StartEx
+  61              		.thumb
+  62              		.thumb_func
+  63              		.type	isr_SPI_StartEx, %function
+  64              	isr_SPI_StartEx:
+  65              	.LFB64:
+  79:Generated_Source\PSoC5/isr_SPI.c **** 
+  80:Generated_Source\PSoC5/isr_SPI.c **** 
+  81:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+  82:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_StartEx
+  83:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+  84:Generated_Source\PSoC5/isr_SPI.c **** *
+  85:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+  86:Generated_Source\PSoC5/isr_SPI.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  87:Generated_Source\PSoC5/isr_SPI.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  88:Generated_Source\PSoC5/isr_SPI.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  89:Generated_Source\PSoC5/isr_SPI.c **** *  the interrupt to the interrupt controller.
+  90:Generated_Source\PSoC5/isr_SPI.c **** *  
+  91:Generated_Source\PSoC5/isr_SPI.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  92:Generated_Source\PSoC5/isr_SPI.c **** *  used to provide consistent definition across compilers:
+  93:Generated_Source\PSoC5/isr_SPI.c **** *  
+  94:Generated_Source\PSoC5/isr_SPI.c **** *  Function definition example:
+  95:Generated_Source\PSoC5/isr_SPI.c **** *   CY_ISR(MyISR)
+  96:Generated_Source\PSoC5/isr_SPI.c **** *   {
+  97:Generated_Source\PSoC5/isr_SPI.c **** *   }
+  98:Generated_Source\PSoC5/isr_SPI.c **** *   Function prototype example:
+  99:Generated_Source\PSoC5/isr_SPI.c **** *   CY_ISR_PROTO(MyISR);
+ 100:Generated_Source\PSoC5/isr_SPI.c **** *
+ 101:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:  
+ 102:Generated_Source\PSoC5/isr_SPI.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 103:Generated_Source\PSoC5/isr_SPI.c **** *
+ 104:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 105:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 106:Generated_Source\PSoC5/isr_SPI.c **** *
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 4
+
+
+ 107:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 108:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_StartEx(cyisraddress address)
+ 109:Generated_Source\PSoC5/isr_SPI.c **** {
+  66              		.loc 1 109 0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 8
+  69              		@ frame_needed = 1, uses_anonymous_args = 0
+  70 0000 80B5     		push	{r7, lr}
+  71              		.cfi_def_cfa_offset 8
+  72              		.cfi_offset 7, -8
+  73              		.cfi_offset 14, -4
+  74 0002 82B0     		sub	sp, sp, #8
+  75              		.cfi_def_cfa_offset 16
+  76 0004 00AF     		add	r7, sp, #0
+  77              		.cfi_def_cfa_register 7
+  78 0006 7860     		str	r0, [r7, #4]
+ 110:Generated_Source\PSoC5/isr_SPI.c ****     /* For all we know the interrupt is active. */
+ 111:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_Disable();
+  79              		.loc 1 111 0
+  80 0008 FFF7FEFF 		bl	isr_SPI_Disable
+ 112:Generated_Source\PSoC5/isr_SPI.c **** 
+ 113:Generated_Source\PSoC5/isr_SPI.c ****     /* Set the ISR to point to the isr_SPI Interrupt. */
+ 114:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_SetVector(address);
+  81              		.loc 1 114 0
+  82 000c 7868     		ldr	r0, [r7, #4]
+  83 000e FFF7FEFF 		bl	isr_SPI_SetVector
+ 115:Generated_Source\PSoC5/isr_SPI.c **** 
+ 116:Generated_Source\PSoC5/isr_SPI.c ****     /* Set the priority. */
+ 117:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_SetPriority((uint8)isr_SPI_INTC_PRIOR_NUMBER);
+  84              		.loc 1 117 0
+  85 0012 0720     		movs	r0, #7
+  86 0014 FFF7FEFF 		bl	isr_SPI_SetPriority
+ 118:Generated_Source\PSoC5/isr_SPI.c **** 
+ 119:Generated_Source\PSoC5/isr_SPI.c ****     /* Enable it. */
+ 120:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_Enable();
+  87              		.loc 1 120 0
+  88 0018 FFF7FEFF 		bl	isr_SPI_Enable
+ 121:Generated_Source\PSoC5/isr_SPI.c **** }
+  89              		.loc 1 121 0
+  90 001c 00BF     		nop
+  91 001e 0837     		adds	r7, r7, #8
+  92              		.cfi_def_cfa_offset 8
+  93 0020 BD46     		mov	sp, r7
+  94              		.cfi_def_cfa_register 13
+  95              		@ sp needed
+  96 0022 80BD     		pop	{r7, pc}
+  97              		.cfi_endproc
+  98              	.LFE64:
+  99              		.size	isr_SPI_StartEx, .-isr_SPI_StartEx
+ 100              		.section	.text.isr_SPI_Stop,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	isr_SPI_Stop
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.type	isr_SPI_Stop, %function
+ 106              	isr_SPI_Stop:
+ 107              	.LFB65:
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 5
+
+
+ 122:Generated_Source\PSoC5/isr_SPI.c **** 
+ 123:Generated_Source\PSoC5/isr_SPI.c **** 
+ 124:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 125:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_Stop
+ 126:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 127:Generated_Source\PSoC5/isr_SPI.c **** *
+ 128:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 129:Generated_Source\PSoC5/isr_SPI.c **** *   Disables and removes the interrupt.
+ 130:Generated_Source\PSoC5/isr_SPI.c **** *
+ 131:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:  
+ 132:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 133:Generated_Source\PSoC5/isr_SPI.c **** *
+ 134:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 135:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 136:Generated_Source\PSoC5/isr_SPI.c **** *
+ 137:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 138:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_Stop(void)
+ 139:Generated_Source\PSoC5/isr_SPI.c **** {
+ 108              		.loc 1 139 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 1, uses_anonymous_args = 0
+ 112 0000 80B5     		push	{r7, lr}
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 7, -8
+ 115              		.cfi_offset 14, -4
+ 116 0002 00AF     		add	r7, sp, #0
+ 117              		.cfi_def_cfa_register 7
+ 140:Generated_Source\PSoC5/isr_SPI.c ****     /* Disable this interrupt. */
+ 141:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_Disable();
+ 118              		.loc 1 141 0
+ 119 0004 FFF7FEFF 		bl	isr_SPI_Disable
+ 142:Generated_Source\PSoC5/isr_SPI.c **** 
+ 143:Generated_Source\PSoC5/isr_SPI.c ****     /* Set the ISR to point to the passive one. */
+ 144:Generated_Source\PSoC5/isr_SPI.c ****     isr_SPI_SetVector(&IntDefaultHandler);
+ 120              		.loc 1 144 0
+ 121 0008 0248     		ldr	r0, .L6
+ 122 000a FFF7FEFF 		bl	isr_SPI_SetVector
+ 145:Generated_Source\PSoC5/isr_SPI.c **** }
+ 123              		.loc 1 145 0
+ 124 000e 00BF     		nop
+ 125 0010 80BD     		pop	{r7, pc}
+ 126              	.L7:
+ 127 0012 00BF     		.align	2
+ 128              	.L6:
+ 129 0014 00000000 		.word	IntDefaultHandler
+ 130              		.cfi_endproc
+ 131              	.LFE65:
+ 132              		.size	isr_SPI_Stop, .-isr_SPI_Stop
+ 133              		.section	.rodata
+ 134              		.align	2
+ 135              	.LC0:
+ 136 0000 4649464F 		.ascii	"FIFO FULL\000"
+ 136      2046554C 
+ 136      4C00
+ 137              		.section	.text.isr_SPI_Interrupt,"ax",%progbits
+ 138              		.align	2
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 6
+
+
+ 139              		.global	isr_SPI_Interrupt
+ 140              		.thumb
+ 141              		.thumb_func
+ 142              		.type	isr_SPI_Interrupt, %function
+ 143              	isr_SPI_Interrupt:
+ 144              	.LFB66:
+ 146:Generated_Source\PSoC5/isr_SPI.c **** 
+ 147:Generated_Source\PSoC5/isr_SPI.c **** 
+ 148:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 149:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_Interrupt
+ 150:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 151:Generated_Source\PSoC5/isr_SPI.c **** *
+ 152:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 153:Generated_Source\PSoC5/isr_SPI.c **** *   The default Interrupt Service Routine for isr_SPI.
+ 154:Generated_Source\PSoC5/isr_SPI.c **** *
+ 155:Generated_Source\PSoC5/isr_SPI.c **** *   Add custom code between the coments to keep the next version of this file
+ 156:Generated_Source\PSoC5/isr_SPI.c **** *   from over writting your code.
+ 157:Generated_Source\PSoC5/isr_SPI.c **** *
+ 158:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:  
+ 159:Generated_Source\PSoC5/isr_SPI.c **** *
+ 160:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 161:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 162:Generated_Source\PSoC5/isr_SPI.c **** *
+ 163:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 164:Generated_Source\PSoC5/isr_SPI.c **** CY_ISR(isr_SPI_Interrupt)
+ 165:Generated_Source\PSoC5/isr_SPI.c **** {
+ 145              		.loc 1 165 0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 1, uses_anonymous_args = 0
+ 149 0000 80B5     		push	{r7, lr}
+ 150              		.cfi_def_cfa_offset 8
+ 151              		.cfi_offset 7, -8
+ 152              		.cfi_offset 14, -4
+ 153 0002 00AF     		add	r7, sp, #0
+ 154              		.cfi_def_cfa_register 7
+ 166:Generated_Source\PSoC5/isr_SPI.c ****     #ifdef isr_SPI_INTERRUPT_INTERRUPT_CALLBACK
+ 167:Generated_Source\PSoC5/isr_SPI.c ****         isr_SPI_Interrupt_InterruptCallback();
+ 168:Generated_Source\PSoC5/isr_SPI.c ****     #endif /* isr_SPI_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 169:Generated_Source\PSoC5/isr_SPI.c **** 
+ 170:Generated_Source\PSoC5/isr_SPI.c ****     /*  Place your Interrupt code here. */
+ 171:Generated_Source\PSoC5/isr_SPI.c ****     /* `#START isr_SPI_Interrupt` */
+ 172:Generated_Source\PSoC5/isr_SPI.c ****         
+ 173:Generated_Source\PSoC5/isr_SPI.c ****         CyGlobalIntDisable
+ 155              		.loc 1 173 0
+ 156              		.syntax unified
+ 157              	@ 173 "Generated_Source\PSoC5\isr_SPI.c" 1
+ 158 0004 72B6     		CPSID   i
+ 159              	@ 0 "" 2
+ 174:Generated_Source\PSoC5/isr_SPI.c ****         UART_1_PutString("FIFO FULL");
+ 160              		.loc 1 174 0
+ 161              		.thumb
+ 162              		.syntax unified
+ 163 0006 0448     		ldr	r0, .L9
+ 164 0008 FFF7FEFF 		bl	UART_1_PutString
+ 175:Generated_Source\PSoC5/isr_SPI.c ****         SPI_ClearRxBuffer();
+ 165              		.loc 1 175 0
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 7
+
+
+ 166 000c FFF7FEFF 		bl	SPI_ClearRxBuffer
+ 176:Generated_Source\PSoC5/isr_SPI.c ****         CyGlobalIntEnable
+ 167              		.loc 1 176 0
+ 168              		.syntax unified
+ 169              	@ 176 "Generated_Source\PSoC5\isr_SPI.c" 1
+ 170 0010 62B6     		CPSIE   i
+ 171              	@ 0 "" 2
+ 177:Generated_Source\PSoC5/isr_SPI.c ****     /* `#END` */
+ 178:Generated_Source\PSoC5/isr_SPI.c **** }
+ 172              		.loc 1 178 0
+ 173              		.thumb
+ 174              		.syntax unified
+ 175 0012 00BF     		nop
+ 176 0014 80BD     		pop	{r7, pc}
+ 177              	.L10:
+ 178 0016 00BF     		.align	2
+ 179              	.L9:
+ 180 0018 00000000 		.word	.LC0
+ 181              		.cfi_endproc
+ 182              	.LFE66:
+ 183              		.size	isr_SPI_Interrupt, .-isr_SPI_Interrupt
+ 184              		.section	.text.isr_SPI_SetVector,"ax",%progbits
+ 185              		.align	2
+ 186              		.global	isr_SPI_SetVector
+ 187              		.thumb
+ 188              		.thumb_func
+ 189              		.type	isr_SPI_SetVector, %function
+ 190              	isr_SPI_SetVector:
+ 191              	.LFB67:
+ 179:Generated_Source\PSoC5/isr_SPI.c **** 
+ 180:Generated_Source\PSoC5/isr_SPI.c **** 
+ 181:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 182:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_SetVector
+ 183:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 184:Generated_Source\PSoC5/isr_SPI.c **** *
+ 185:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 186:Generated_Source\PSoC5/isr_SPI.c **** *   Change the ISR vector for the Interrupt. Note calling isr_SPI_Start
+ 187:Generated_Source\PSoC5/isr_SPI.c **** *   will override any effect this method would have had. To set the vector 
+ 188:Generated_Source\PSoC5/isr_SPI.c **** *   before the component has been started use isr_SPI_StartEx instead.
+ 189:Generated_Source\PSoC5/isr_SPI.c **** * 
+ 190:Generated_Source\PSoC5/isr_SPI.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 191:Generated_Source\PSoC5/isr_SPI.c **** *   used to provide consistent definition across compilers:
+ 192:Generated_Source\PSoC5/isr_SPI.c **** *
+ 193:Generated_Source\PSoC5/isr_SPI.c **** *   Function definition example:
+ 194:Generated_Source\PSoC5/isr_SPI.c **** *   CY_ISR(MyISR)
+ 195:Generated_Source\PSoC5/isr_SPI.c **** *   {
+ 196:Generated_Source\PSoC5/isr_SPI.c **** *   }
+ 197:Generated_Source\PSoC5/isr_SPI.c **** *
+ 198:Generated_Source\PSoC5/isr_SPI.c **** *   Function prototype example:
+ 199:Generated_Source\PSoC5/isr_SPI.c **** *     CY_ISR_PROTO(MyISR);
+ 200:Generated_Source\PSoC5/isr_SPI.c **** *
+ 201:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 202:Generated_Source\PSoC5/isr_SPI.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 203:Generated_Source\PSoC5/isr_SPI.c **** *
+ 204:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 205:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 206:Generated_Source\PSoC5/isr_SPI.c **** *
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 8
+
+
+ 207:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 208:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_SetVector(cyisraddress address)
+ 209:Generated_Source\PSoC5/isr_SPI.c **** {
+ 192              		.loc 1 209 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 16
+ 195              		@ frame_needed = 1, uses_anonymous_args = 0
+ 196              		@ link register save eliminated.
+ 197 0000 80B4     		push	{r7}
+ 198              		.cfi_def_cfa_offset 4
+ 199              		.cfi_offset 7, -4
+ 200 0002 85B0     		sub	sp, sp, #20
+ 201              		.cfi_def_cfa_offset 24
+ 202 0004 00AF     		add	r7, sp, #0
+ 203              		.cfi_def_cfa_register 7
+ 204 0006 7860     		str	r0, [r7, #4]
+ 210:Generated_Source\PSoC5/isr_SPI.c ****     cyisraddress * ramVectorTable;
+ 211:Generated_Source\PSoC5/isr_SPI.c **** 
+ 212:Generated_Source\PSoC5/isr_SPI.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 205              		.loc 1 212 0
+ 206 0008 054B     		ldr	r3, .L12
+ 207 000a 1B68     		ldr	r3, [r3]
+ 208 000c FB60     		str	r3, [r7, #12]
+ 213:Generated_Source\PSoC5/isr_SPI.c **** 
+ 214:Generated_Source\PSoC5/isr_SPI.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_SPI__INTC_NUMBER] = address;
+ 209              		.loc 1 214 0
+ 210 000e FB68     		ldr	r3, [r7, #12]
+ 211 0010 4433     		adds	r3, r3, #68
+ 212 0012 7A68     		ldr	r2, [r7, #4]
+ 213 0014 1A60     		str	r2, [r3]
+ 215:Generated_Source\PSoC5/isr_SPI.c **** }
+ 214              		.loc 1 215 0
+ 215 0016 00BF     		nop
+ 216 0018 1437     		adds	r7, r7, #20
+ 217              		.cfi_def_cfa_offset 4
+ 218 001a BD46     		mov	sp, r7
+ 219              		.cfi_def_cfa_register 13
+ 220              		@ sp needed
+ 221 001c 80BC     		pop	{r7}
+ 222              		.cfi_restore 7
+ 223              		.cfi_def_cfa_offset 0
+ 224 001e 7047     		bx	lr
+ 225              	.L13:
+ 226              		.align	2
+ 227              	.L12:
+ 228 0020 08ED00E0 		.word	-536810232
+ 229              		.cfi_endproc
+ 230              	.LFE67:
+ 231              		.size	isr_SPI_SetVector, .-isr_SPI_SetVector
+ 232              		.section	.text.isr_SPI_GetVector,"ax",%progbits
+ 233              		.align	2
+ 234              		.global	isr_SPI_GetVector
+ 235              		.thumb
+ 236              		.thumb_func
+ 237              		.type	isr_SPI_GetVector, %function
+ 238              	isr_SPI_GetVector:
+ 239              	.LFB68:
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 9
+
+
+ 216:Generated_Source\PSoC5/isr_SPI.c **** 
+ 217:Generated_Source\PSoC5/isr_SPI.c **** 
+ 218:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 219:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_GetVector
+ 220:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 221:Generated_Source\PSoC5/isr_SPI.c **** *
+ 222:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 223:Generated_Source\PSoC5/isr_SPI.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 224:Generated_Source\PSoC5/isr_SPI.c **** *
+ 225:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 226:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 227:Generated_Source\PSoC5/isr_SPI.c **** *
+ 228:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 229:Generated_Source\PSoC5/isr_SPI.c **** *   Address of the ISR in the interrupt vector table.
+ 230:Generated_Source\PSoC5/isr_SPI.c **** *
+ 231:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 232:Generated_Source\PSoC5/isr_SPI.c **** cyisraddress isr_SPI_GetVector(void)
+ 233:Generated_Source\PSoC5/isr_SPI.c **** {
+ 240              		.loc 1 233 0
+ 241              		.cfi_startproc
+ 242              		@ args = 0, pretend = 0, frame = 8
+ 243              		@ frame_needed = 1, uses_anonymous_args = 0
+ 244              		@ link register save eliminated.
+ 245 0000 80B4     		push	{r7}
+ 246              		.cfi_def_cfa_offset 4
+ 247              		.cfi_offset 7, -4
+ 248 0002 83B0     		sub	sp, sp, #12
+ 249              		.cfi_def_cfa_offset 16
+ 250 0004 00AF     		add	r7, sp, #0
+ 251              		.cfi_def_cfa_register 7
+ 234:Generated_Source\PSoC5/isr_SPI.c ****     cyisraddress * ramVectorTable;
+ 235:Generated_Source\PSoC5/isr_SPI.c **** 
+ 236:Generated_Source\PSoC5/isr_SPI.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 252              		.loc 1 236 0
+ 253 0006 054B     		ldr	r3, .L16
+ 254 0008 1B68     		ldr	r3, [r3]
+ 255 000a 7B60     		str	r3, [r7, #4]
+ 237:Generated_Source\PSoC5/isr_SPI.c **** 
+ 238:Generated_Source\PSoC5/isr_SPI.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_SPI__INTC_NUMBER];
+ 256              		.loc 1 238 0
+ 257 000c 7B68     		ldr	r3, [r7, #4]
+ 258 000e 5B6C     		ldr	r3, [r3, #68]
+ 239:Generated_Source\PSoC5/isr_SPI.c **** }
+ 259              		.loc 1 239 0
+ 260 0010 1846     		mov	r0, r3
+ 261 0012 0C37     		adds	r7, r7, #12
+ 262              		.cfi_def_cfa_offset 4
+ 263 0014 BD46     		mov	sp, r7
+ 264              		.cfi_def_cfa_register 13
+ 265              		@ sp needed
+ 266 0016 80BC     		pop	{r7}
+ 267              		.cfi_restore 7
+ 268              		.cfi_def_cfa_offset 0
+ 269 0018 7047     		bx	lr
+ 270              	.L17:
+ 271 001a 00BF     		.align	2
+ 272              	.L16:
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 10
+
+
+ 273 001c 08ED00E0 		.word	-536810232
+ 274              		.cfi_endproc
+ 275              	.LFE68:
+ 276              		.size	isr_SPI_GetVector, .-isr_SPI_GetVector
+ 277              		.section	.text.isr_SPI_SetPriority,"ax",%progbits
+ 278              		.align	2
+ 279              		.global	isr_SPI_SetPriority
+ 280              		.thumb
+ 281              		.thumb_func
+ 282              		.type	isr_SPI_SetPriority, %function
+ 283              	isr_SPI_SetPriority:
+ 284              	.LFB69:
+ 240:Generated_Source\PSoC5/isr_SPI.c **** 
+ 241:Generated_Source\PSoC5/isr_SPI.c **** 
+ 242:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 243:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_SetPriority
+ 244:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 245:Generated_Source\PSoC5/isr_SPI.c **** *
+ 246:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 247:Generated_Source\PSoC5/isr_SPI.c **** *   Sets the Priority of the Interrupt. 
+ 248:Generated_Source\PSoC5/isr_SPI.c **** *
+ 249:Generated_Source\PSoC5/isr_SPI.c **** *   Note calling isr_SPI_Start or isr_SPI_StartEx will 
+ 250:Generated_Source\PSoC5/isr_SPI.c **** *   override any effect this API would have had. This API should only be called
+ 251:Generated_Source\PSoC5/isr_SPI.c **** *   after isr_SPI_Start or isr_SPI_StartEx has been called. 
+ 252:Generated_Source\PSoC5/isr_SPI.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 253:Generated_Source\PSoC5/isr_SPI.c **** *   Interrupt Editor.
+ 254:Generated_Source\PSoC5/isr_SPI.c **** *
+ 255:Generated_Source\PSoC5/isr_SPI.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 256:Generated_Source\PSoC5/isr_SPI.c **** *
+ 257:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 258:Generated_Source\PSoC5/isr_SPI.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 259:Generated_Source\PSoC5/isr_SPI.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 260:Generated_Source\PSoC5/isr_SPI.c **** *             PSoC 4: Priority is from 0 to 3.
+ 261:Generated_Source\PSoC5/isr_SPI.c **** *
+ 262:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 263:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 264:Generated_Source\PSoC5/isr_SPI.c **** *
+ 265:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 266:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_SetPriority(uint8 priority)
+ 267:Generated_Source\PSoC5/isr_SPI.c **** {
+ 285              		.loc 1 267 0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 8
+ 288              		@ frame_needed = 1, uses_anonymous_args = 0
+ 289              		@ link register save eliminated.
+ 290 0000 80B4     		push	{r7}
+ 291              		.cfi_def_cfa_offset 4
+ 292              		.cfi_offset 7, -4
+ 293 0002 83B0     		sub	sp, sp, #12
+ 294              		.cfi_def_cfa_offset 16
+ 295 0004 00AF     		add	r7, sp, #0
+ 296              		.cfi_def_cfa_register 7
+ 297 0006 0346     		mov	r3, r0
+ 298 0008 FB71     		strb	r3, [r7, #7]
+ 268:Generated_Source\PSoC5/isr_SPI.c ****     *isr_SPI_INTC_PRIOR = priority << 5;
+ 299              		.loc 1 268 0
+ 300 000a 054A     		ldr	r2, .L19
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 11
+
+
+ 301 000c FB79     		ldrb	r3, [r7, #7]
+ 302 000e 5B01     		lsls	r3, r3, #5
+ 303 0010 DBB2     		uxtb	r3, r3
+ 304 0012 1370     		strb	r3, [r2]
+ 269:Generated_Source\PSoC5/isr_SPI.c **** }
+ 305              		.loc 1 269 0
+ 306 0014 00BF     		nop
+ 307 0016 0C37     		adds	r7, r7, #12
+ 308              		.cfi_def_cfa_offset 4
+ 309 0018 BD46     		mov	sp, r7
+ 310              		.cfi_def_cfa_register 13
+ 311              		@ sp needed
+ 312 001a 80BC     		pop	{r7}
+ 313              		.cfi_restore 7
+ 314              		.cfi_def_cfa_offset 0
+ 315 001c 7047     		bx	lr
+ 316              	.L20:
+ 317 001e 00BF     		.align	2
+ 318              	.L19:
+ 319 0020 01E400E0 		.word	-536812543
+ 320              		.cfi_endproc
+ 321              	.LFE69:
+ 322              		.size	isr_SPI_SetPriority, .-isr_SPI_SetPriority
+ 323              		.section	.text.isr_SPI_GetPriority,"ax",%progbits
+ 324              		.align	2
+ 325              		.global	isr_SPI_GetPriority
+ 326              		.thumb
+ 327              		.thumb_func
+ 328              		.type	isr_SPI_GetPriority, %function
+ 329              	isr_SPI_GetPriority:
+ 330              	.LFB70:
+ 270:Generated_Source\PSoC5/isr_SPI.c **** 
+ 271:Generated_Source\PSoC5/isr_SPI.c **** 
+ 272:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 273:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_GetPriority
+ 274:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 275:Generated_Source\PSoC5/isr_SPI.c **** *
+ 276:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 277:Generated_Source\PSoC5/isr_SPI.c **** *   Gets the Priority of the Interrupt.
+ 278:Generated_Source\PSoC5/isr_SPI.c **** *
+ 279:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 280:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 281:Generated_Source\PSoC5/isr_SPI.c **** *
+ 282:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 283:Generated_Source\PSoC5/isr_SPI.c **** *   Priority of the interrupt, 0 being the highest priority
+ 284:Generated_Source\PSoC5/isr_SPI.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 285:Generated_Source\PSoC5/isr_SPI.c **** *    PSoC 4: Priority is from 0 to 3.
+ 286:Generated_Source\PSoC5/isr_SPI.c **** *
+ 287:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 288:Generated_Source\PSoC5/isr_SPI.c **** uint8 isr_SPI_GetPriority(void)
+ 289:Generated_Source\PSoC5/isr_SPI.c **** {
+ 331              		.loc 1 289 0
+ 332              		.cfi_startproc
+ 333              		@ args = 0, pretend = 0, frame = 8
+ 334              		@ frame_needed = 1, uses_anonymous_args = 0
+ 335              		@ link register save eliminated.
+ 336 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 12
+
+
+ 337              		.cfi_def_cfa_offset 4
+ 338              		.cfi_offset 7, -4
+ 339 0002 83B0     		sub	sp, sp, #12
+ 340              		.cfi_def_cfa_offset 16
+ 341 0004 00AF     		add	r7, sp, #0
+ 342              		.cfi_def_cfa_register 7
+ 290:Generated_Source\PSoC5/isr_SPI.c ****     uint8 priority;
+ 291:Generated_Source\PSoC5/isr_SPI.c **** 
+ 292:Generated_Source\PSoC5/isr_SPI.c **** 
+ 293:Generated_Source\PSoC5/isr_SPI.c ****     priority = *isr_SPI_INTC_PRIOR >> 5;
+ 343              		.loc 1 293 0
+ 344 0006 054B     		ldr	r3, .L23
+ 345 0008 1B78     		ldrb	r3, [r3]
+ 346 000a DBB2     		uxtb	r3, r3
+ 347 000c 5B09     		lsrs	r3, r3, #5
+ 348 000e FB71     		strb	r3, [r7, #7]
+ 294:Generated_Source\PSoC5/isr_SPI.c **** 
+ 295:Generated_Source\PSoC5/isr_SPI.c ****     return priority;
+ 349              		.loc 1 295 0
+ 350 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 296:Generated_Source\PSoC5/isr_SPI.c **** }
+ 351              		.loc 1 296 0
+ 352 0012 1846     		mov	r0, r3
+ 353 0014 0C37     		adds	r7, r7, #12
+ 354              		.cfi_def_cfa_offset 4
+ 355 0016 BD46     		mov	sp, r7
+ 356              		.cfi_def_cfa_register 13
+ 357              		@ sp needed
+ 358 0018 80BC     		pop	{r7}
+ 359              		.cfi_restore 7
+ 360              		.cfi_def_cfa_offset 0
+ 361 001a 7047     		bx	lr
+ 362              	.L24:
+ 363              		.align	2
+ 364              	.L23:
+ 365 001c 01E400E0 		.word	-536812543
+ 366              		.cfi_endproc
+ 367              	.LFE70:
+ 368              		.size	isr_SPI_GetPriority, .-isr_SPI_GetPriority
+ 369              		.section	.text.isr_SPI_Enable,"ax",%progbits
+ 370              		.align	2
+ 371              		.global	isr_SPI_Enable
+ 372              		.thumb
+ 373              		.thumb_func
+ 374              		.type	isr_SPI_Enable, %function
+ 375              	isr_SPI_Enable:
+ 376              	.LFB71:
+ 297:Generated_Source\PSoC5/isr_SPI.c **** 
+ 298:Generated_Source\PSoC5/isr_SPI.c **** 
+ 299:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 300:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_Enable
+ 301:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 302:Generated_Source\PSoC5/isr_SPI.c **** *
+ 303:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 304:Generated_Source\PSoC5/isr_SPI.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 305:Generated_Source\PSoC5/isr_SPI.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 306:Generated_Source\PSoC5/isr_SPI.c **** *   function, which sets the vector and the priority, has been called.
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 13
+
+
+ 307:Generated_Source\PSoC5/isr_SPI.c **** *
+ 308:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 309:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 310:Generated_Source\PSoC5/isr_SPI.c **** *
+ 311:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 312:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 313:Generated_Source\PSoC5/isr_SPI.c **** *
+ 314:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 315:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_Enable(void)
+ 316:Generated_Source\PSoC5/isr_SPI.c **** {
+ 377              		.loc 1 316 0
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 0
+ 380              		@ frame_needed = 1, uses_anonymous_args = 0
+ 381              		@ link register save eliminated.
+ 382 0000 80B4     		push	{r7}
+ 383              		.cfi_def_cfa_offset 4
+ 384              		.cfi_offset 7, -4
+ 385 0002 00AF     		add	r7, sp, #0
+ 386              		.cfi_def_cfa_register 7
+ 317:Generated_Source\PSoC5/isr_SPI.c ****     /* Enable the general interrupt. */
+ 318:Generated_Source\PSoC5/isr_SPI.c ****     *isr_SPI_INTC_SET_EN = isr_SPI__INTC_MASK;
+ 387              		.loc 1 318 0
+ 388 0004 034B     		ldr	r3, .L26
+ 389 0006 0222     		movs	r2, #2
+ 390 0008 1A60     		str	r2, [r3]
+ 319:Generated_Source\PSoC5/isr_SPI.c **** }
+ 391              		.loc 1 319 0
+ 392 000a 00BF     		nop
+ 393 000c BD46     		mov	sp, r7
+ 394              		.cfi_def_cfa_register 13
+ 395              		@ sp needed
+ 396 000e 80BC     		pop	{r7}
+ 397              		.cfi_restore 7
+ 398              		.cfi_def_cfa_offset 0
+ 399 0010 7047     		bx	lr
+ 400              	.L27:
+ 401 0012 00BF     		.align	2
+ 402              	.L26:
+ 403 0014 00E100E0 		.word	-536813312
+ 404              		.cfi_endproc
+ 405              	.LFE71:
+ 406              		.size	isr_SPI_Enable, .-isr_SPI_Enable
+ 407              		.section	.text.isr_SPI_GetState,"ax",%progbits
+ 408              		.align	2
+ 409              		.global	isr_SPI_GetState
+ 410              		.thumb
+ 411              		.thumb_func
+ 412              		.type	isr_SPI_GetState, %function
+ 413              	isr_SPI_GetState:
+ 414              	.LFB72:
+ 320:Generated_Source\PSoC5/isr_SPI.c **** 
+ 321:Generated_Source\PSoC5/isr_SPI.c **** 
+ 322:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 323:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_GetState
+ 324:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 325:Generated_Source\PSoC5/isr_SPI.c **** *
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 14
+
+
+ 326:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 327:Generated_Source\PSoC5/isr_SPI.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 328:Generated_Source\PSoC5/isr_SPI.c **** *
+ 329:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 330:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 331:Generated_Source\PSoC5/isr_SPI.c **** *
+ 332:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 333:Generated_Source\PSoC5/isr_SPI.c **** *   1 if enabled, 0 if disabled.
+ 334:Generated_Source\PSoC5/isr_SPI.c **** *
+ 335:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 336:Generated_Source\PSoC5/isr_SPI.c **** uint8 isr_SPI_GetState(void)
+ 337:Generated_Source\PSoC5/isr_SPI.c **** {
+ 415              		.loc 1 337 0
+ 416              		.cfi_startproc
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 1, uses_anonymous_args = 0
+ 419              		@ link register save eliminated.
+ 420 0000 80B4     		push	{r7}
+ 421              		.cfi_def_cfa_offset 4
+ 422              		.cfi_offset 7, -4
+ 423 0002 00AF     		add	r7, sp, #0
+ 424              		.cfi_def_cfa_register 7
+ 338:Generated_Source\PSoC5/isr_SPI.c ****     /* Get the state of the general interrupt. */
+ 339:Generated_Source\PSoC5/isr_SPI.c ****     return ((*isr_SPI_INTC_SET_EN & (uint32)isr_SPI__INTC_MASK) != 0u) ? 1u:0u;
+ 425              		.loc 1 339 0
+ 426 0004 064B     		ldr	r3, .L32
+ 427 0006 1B68     		ldr	r3, [r3]
+ 428 0008 03F00203 		and	r3, r3, #2
+ 429 000c 002B     		cmp	r3, #0
+ 430 000e 01D0     		beq	.L29
+ 431              		.loc 1 339 0 is_stmt 0 discriminator 1
+ 432 0010 0123     		movs	r3, #1
+ 433 0012 00E0     		b	.L30
+ 434              	.L29:
+ 435              		.loc 1 339 0 discriminator 2
+ 436 0014 0023     		movs	r3, #0
+ 437              	.L30:
+ 340:Generated_Source\PSoC5/isr_SPI.c **** }
+ 438              		.loc 1 340 0 is_stmt 1 discriminator 4
+ 439 0016 1846     		mov	r0, r3
+ 440 0018 BD46     		mov	sp, r7
+ 441              		.cfi_def_cfa_register 13
+ 442              		@ sp needed
+ 443 001a 80BC     		pop	{r7}
+ 444              		.cfi_restore 7
+ 445              		.cfi_def_cfa_offset 0
+ 446 001c 7047     		bx	lr
+ 447              	.L33:
+ 448 001e 00BF     		.align	2
+ 449              	.L32:
+ 450 0020 00E100E0 		.word	-536813312
+ 451              		.cfi_endproc
+ 452              	.LFE72:
+ 453              		.size	isr_SPI_GetState, .-isr_SPI_GetState
+ 454              		.section	.text.isr_SPI_Disable,"ax",%progbits
+ 455              		.align	2
+ 456              		.global	isr_SPI_Disable
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 15
+
+
+ 457              		.thumb
+ 458              		.thumb_func
+ 459              		.type	isr_SPI_Disable, %function
+ 460              	isr_SPI_Disable:
+ 461              	.LFB73:
+ 341:Generated_Source\PSoC5/isr_SPI.c **** 
+ 342:Generated_Source\PSoC5/isr_SPI.c **** 
+ 343:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 344:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_Disable
+ 345:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 346:Generated_Source\PSoC5/isr_SPI.c **** *
+ 347:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 348:Generated_Source\PSoC5/isr_SPI.c **** *   Disables the Interrupt in the interrupt controller.
+ 349:Generated_Source\PSoC5/isr_SPI.c **** *
+ 350:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 351:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 352:Generated_Source\PSoC5/isr_SPI.c **** *
+ 353:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 354:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 355:Generated_Source\PSoC5/isr_SPI.c **** *
+ 356:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 357:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_Disable(void)
+ 358:Generated_Source\PSoC5/isr_SPI.c **** {
+ 462              		.loc 1 358 0
+ 463              		.cfi_startproc
+ 464              		@ args = 0, pretend = 0, frame = 0
+ 465              		@ frame_needed = 1, uses_anonymous_args = 0
+ 466              		@ link register save eliminated.
+ 467 0000 80B4     		push	{r7}
+ 468              		.cfi_def_cfa_offset 4
+ 469              		.cfi_offset 7, -4
+ 470 0002 00AF     		add	r7, sp, #0
+ 471              		.cfi_def_cfa_register 7
+ 359:Generated_Source\PSoC5/isr_SPI.c ****     /* Disable the general interrupt. */
+ 360:Generated_Source\PSoC5/isr_SPI.c ****     *isr_SPI_INTC_CLR_EN = isr_SPI__INTC_MASK;
+ 472              		.loc 1 360 0
+ 473 0004 034B     		ldr	r3, .L35
+ 474 0006 0222     		movs	r2, #2
+ 475 0008 1A60     		str	r2, [r3]
+ 361:Generated_Source\PSoC5/isr_SPI.c **** }
+ 476              		.loc 1 361 0
+ 477 000a 00BF     		nop
+ 478 000c BD46     		mov	sp, r7
+ 479              		.cfi_def_cfa_register 13
+ 480              		@ sp needed
+ 481 000e 80BC     		pop	{r7}
+ 482              		.cfi_restore 7
+ 483              		.cfi_def_cfa_offset 0
+ 484 0010 7047     		bx	lr
+ 485              	.L36:
+ 486 0012 00BF     		.align	2
+ 487              	.L35:
+ 488 0014 80E100E0 		.word	-536813184
+ 489              		.cfi_endproc
+ 490              	.LFE73:
+ 491              		.size	isr_SPI_Disable, .-isr_SPI_Disable
+ 492              		.section	.text.isr_SPI_SetPending,"ax",%progbits
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 16
+
+
+ 493              		.align	2
+ 494              		.global	isr_SPI_SetPending
+ 495              		.thumb
+ 496              		.thumb_func
+ 497              		.type	isr_SPI_SetPending, %function
+ 498              	isr_SPI_SetPending:
+ 499              	.LFB74:
+ 362:Generated_Source\PSoC5/isr_SPI.c **** 
+ 363:Generated_Source\PSoC5/isr_SPI.c **** 
+ 364:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 365:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_SetPending
+ 366:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 367:Generated_Source\PSoC5/isr_SPI.c **** *
+ 368:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 369:Generated_Source\PSoC5/isr_SPI.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 370:Generated_Source\PSoC5/isr_SPI.c **** *   generating the interrupt.
+ 371:Generated_Source\PSoC5/isr_SPI.c **** *
+ 372:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 373:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 374:Generated_Source\PSoC5/isr_SPI.c **** *
+ 375:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 376:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 377:Generated_Source\PSoC5/isr_SPI.c **** *
+ 378:Generated_Source\PSoC5/isr_SPI.c **** * Side Effects:
+ 379:Generated_Source\PSoC5/isr_SPI.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 380:Generated_Source\PSoC5/isr_SPI.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 381:Generated_Source\PSoC5/isr_SPI.c **** *   interrupts).
+ 382:Generated_Source\PSoC5/isr_SPI.c **** *
+ 383:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 384:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_SetPending(void)
+ 385:Generated_Source\PSoC5/isr_SPI.c **** {
+ 500              		.loc 1 385 0
+ 501              		.cfi_startproc
+ 502              		@ args = 0, pretend = 0, frame = 0
+ 503              		@ frame_needed = 1, uses_anonymous_args = 0
+ 504              		@ link register save eliminated.
+ 505 0000 80B4     		push	{r7}
+ 506              		.cfi_def_cfa_offset 4
+ 507              		.cfi_offset 7, -4
+ 508 0002 00AF     		add	r7, sp, #0
+ 509              		.cfi_def_cfa_register 7
+ 386:Generated_Source\PSoC5/isr_SPI.c ****     *isr_SPI_INTC_SET_PD = isr_SPI__INTC_MASK;
+ 510              		.loc 1 386 0
+ 511 0004 034B     		ldr	r3, .L38
+ 512 0006 0222     		movs	r2, #2
+ 513 0008 1A60     		str	r2, [r3]
+ 387:Generated_Source\PSoC5/isr_SPI.c **** }
+ 514              		.loc 1 387 0
+ 515 000a 00BF     		nop
+ 516 000c BD46     		mov	sp, r7
+ 517              		.cfi_def_cfa_register 13
+ 518              		@ sp needed
+ 519 000e 80BC     		pop	{r7}
+ 520              		.cfi_restore 7
+ 521              		.cfi_def_cfa_offset 0
+ 522 0010 7047     		bx	lr
+ 523              	.L39:
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 17
+
+
+ 524 0012 00BF     		.align	2
+ 525              	.L38:
+ 526 0014 00E200E0 		.word	-536813056
+ 527              		.cfi_endproc
+ 528              	.LFE74:
+ 529              		.size	isr_SPI_SetPending, .-isr_SPI_SetPending
+ 530              		.section	.text.isr_SPI_ClearPending,"ax",%progbits
+ 531              		.align	2
+ 532              		.global	isr_SPI_ClearPending
+ 533              		.thumb
+ 534              		.thumb_func
+ 535              		.type	isr_SPI_ClearPending, %function
+ 536              	isr_SPI_ClearPending:
+ 537              	.LFB75:
+ 388:Generated_Source\PSoC5/isr_SPI.c **** 
+ 389:Generated_Source\PSoC5/isr_SPI.c **** 
+ 390:Generated_Source\PSoC5/isr_SPI.c **** /*******************************************************************************
+ 391:Generated_Source\PSoC5/isr_SPI.c **** * Function Name: isr_SPI_ClearPending
+ 392:Generated_Source\PSoC5/isr_SPI.c **** ********************************************************************************
+ 393:Generated_Source\PSoC5/isr_SPI.c **** *
+ 394:Generated_Source\PSoC5/isr_SPI.c **** * Summary:
+ 395:Generated_Source\PSoC5/isr_SPI.c **** *   Clears a pending interrupt in the interrupt controller.
+ 396:Generated_Source\PSoC5/isr_SPI.c **** *
+ 397:Generated_Source\PSoC5/isr_SPI.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 398:Generated_Source\PSoC5/isr_SPI.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 399:Generated_Source\PSoC5/isr_SPI.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 400:Generated_Source\PSoC5/isr_SPI.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 401:Generated_Source\PSoC5/isr_SPI.c **** *
+ 402:Generated_Source\PSoC5/isr_SPI.c **** * Parameters:
+ 403:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 404:Generated_Source\PSoC5/isr_SPI.c **** *
+ 405:Generated_Source\PSoC5/isr_SPI.c **** * Return:
+ 406:Generated_Source\PSoC5/isr_SPI.c **** *   None
+ 407:Generated_Source\PSoC5/isr_SPI.c **** *
+ 408:Generated_Source\PSoC5/isr_SPI.c **** *******************************************************************************/
+ 409:Generated_Source\PSoC5/isr_SPI.c **** void isr_SPI_ClearPending(void)
+ 410:Generated_Source\PSoC5/isr_SPI.c **** {
+ 538              		.loc 1 410 0
+ 539              		.cfi_startproc
+ 540              		@ args = 0, pretend = 0, frame = 0
+ 541              		@ frame_needed = 1, uses_anonymous_args = 0
+ 542              		@ link register save eliminated.
+ 543 0000 80B4     		push	{r7}
+ 544              		.cfi_def_cfa_offset 4
+ 545              		.cfi_offset 7, -4
+ 546 0002 00AF     		add	r7, sp, #0
+ 547              		.cfi_def_cfa_register 7
+ 411:Generated_Source\PSoC5/isr_SPI.c ****     *isr_SPI_INTC_CLR_PD = isr_SPI__INTC_MASK;
+ 548              		.loc 1 411 0
+ 549 0004 034B     		ldr	r3, .L41
+ 550 0006 0222     		movs	r2, #2
+ 551 0008 1A60     		str	r2, [r3]
+ 412:Generated_Source\PSoC5/isr_SPI.c **** }
+ 552              		.loc 1 412 0
+ 553 000a 00BF     		nop
+ 554 000c BD46     		mov	sp, r7
+ 555              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 18
+
+
+ 556              		@ sp needed
+ 557 000e 80BC     		pop	{r7}
+ 558              		.cfi_restore 7
+ 559              		.cfi_def_cfa_offset 0
+ 560 0010 7047     		bx	lr
+ 561              	.L42:
+ 562 0012 00BF     		.align	2
+ 563              	.L41:
+ 564 0014 80E200E0 		.word	-536812928
+ 565              		.cfi_endproc
+ 566              	.LFE75:
+ 567              		.size	isr_SPI_ClearPending, .-isr_SPI_ClearPending
+ 568              		.text
+ 569              	.Letext0:
+ 570              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 571              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 572              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 573              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 574              		.section	.debug_info,"",%progbits
+ 575              	.Ldebug_info0:
+ 576 0000 64020000 		.4byte	0x264
+ 577 0004 0400     		.2byte	0x4
+ 578 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 579 000a 04       		.byte	0x4
+ 580 000b 01       		.uleb128 0x1
+ 581 000c 06000000 		.4byte	.LASF36
+ 582 0010 0C       		.byte	0xc
+ 583 0011 BF000000 		.4byte	.LASF37
+ 584 0015 45020000 		.4byte	.LASF38
+ 585 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 586 001d 00000000 		.4byte	0
+ 587 0021 00000000 		.4byte	.Ldebug_line0
+ 588 0025 02       		.uleb128 0x2
+ 589 0026 04       		.byte	0x4
+ 590 0027 05       		.byte	0x5
+ 591 0028 696E7400 		.ascii	"int\000"
+ 592 002c 03       		.uleb128 0x3
+ 593 002d 04       		.byte	0x4
+ 594 002e 07       		.byte	0x7
+ 595 002f B9010000 		.4byte	.LASF0
+ 596 0033 03       		.uleb128 0x3
+ 597 0034 08       		.byte	0x8
+ 598 0035 05       		.byte	0x5
+ 599 0036 23020000 		.4byte	.LASF1
+ 600 003a 03       		.uleb128 0x3
+ 601 003b 08       		.byte	0x8
+ 602 003c 04       		.byte	0x4
+ 603 003d E3020000 		.4byte	.LASF2
+ 604 0041 03       		.uleb128 0x3
+ 605 0042 01       		.byte	0x1
+ 606 0043 06       		.byte	0x6
+ 607 0044 06020000 		.4byte	.LASF3
+ 608 0048 03       		.uleb128 0x3
+ 609 0049 01       		.byte	0x1
+ 610 004a 08       		.byte	0x8
+ 611 004b 2A010000 		.4byte	.LASF4
+ 612 004f 03       		.uleb128 0x3
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 19
+
+
+ 613 0050 02       		.byte	0x2
+ 614 0051 05       		.byte	0x5
+ 615 0052 B8020000 		.4byte	.LASF5
+ 616 0056 03       		.uleb128 0x3
+ 617 0057 02       		.byte	0x2
+ 618 0058 07       		.byte	0x7
+ 619 0059 5F010000 		.4byte	.LASF6
+ 620 005d 04       		.uleb128 0x4
+ 621 005e A5000000 		.4byte	.LASF12
+ 622 0062 02       		.byte	0x2
+ 623 0063 3F       		.byte	0x3f
+ 624 0064 68000000 		.4byte	0x68
+ 625 0068 03       		.uleb128 0x3
+ 626 0069 04       		.byte	0x4
+ 627 006a 05       		.byte	0x5
+ 628 006b DA020000 		.4byte	.LASF7
+ 629 006f 03       		.uleb128 0x3
+ 630 0070 04       		.byte	0x4
+ 631 0071 07       		.byte	0x7
+ 632 0072 4D010000 		.4byte	.LASF8
+ 633 0076 03       		.uleb128 0x3
+ 634 0077 08       		.byte	0x8
+ 635 0078 07       		.byte	0x7
+ 636 0079 CE010000 		.4byte	.LASF9
+ 637 007d 03       		.uleb128 0x3
+ 638 007e 04       		.byte	0x4
+ 639 007f 07       		.byte	0x7
+ 640 0080 1A020000 		.4byte	.LASF10
+ 641 0084 03       		.uleb128 0x3
+ 642 0085 01       		.byte	0x1
+ 643 0086 08       		.byte	0x8
+ 644 0087 31020000 		.4byte	.LASF11
+ 645 008b 05       		.uleb128 0x5
+ 646 008c 04       		.byte	0x4
+ 647 008d 91000000 		.4byte	0x91
+ 648 0091 06       		.uleb128 0x6
+ 649 0092 04       		.uleb128 0x4
+ 650 0093 12020000 		.4byte	.LASF13
+ 651 0097 03       		.byte	0x3
+ 652 0098 2C       		.byte	0x2c
+ 653 0099 5D000000 		.4byte	0x5d
+ 654 009d 07       		.uleb128 0x7
+ 655 009e C2020000 		.4byte	.LASF14
+ 656 00a2 04       		.byte	0x4
+ 657 00a3 E801     		.2byte	0x1e8
+ 658 00a5 48000000 		.4byte	0x48
+ 659 00a9 07       		.uleb128 0x7
+ 660 00aa B2010000 		.4byte	.LASF15
+ 661 00ae 04       		.byte	0x4
+ 662 00af EA01     		.2byte	0x1ea
+ 663 00b1 6F000000 		.4byte	0x6f
+ 664 00b5 03       		.uleb128 0x3
+ 665 00b6 04       		.byte	0x4
+ 666 00b7 04       		.byte	0x4
+ 667 00b8 04010000 		.4byte	.LASF16
+ 668 00bc 03       		.uleb128 0x3
+ 669 00bd 08       		.byte	0x8
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 20
+
+
+ 670 00be 04       		.byte	0x4
+ 671 00bf 7F010000 		.4byte	.LASF17
+ 672 00c3 07       		.uleb128 0x7
+ 673 00c4 48010000 		.4byte	.LASF18
+ 674 00c8 04       		.byte	0x4
+ 675 00c9 9202     		.2byte	0x292
+ 676 00cb CF000000 		.4byte	0xcf
+ 677 00cf 08       		.uleb128 0x8
+ 678 00d0 9D000000 		.4byte	0x9d
+ 679 00d4 07       		.uleb128 0x7
+ 680 00d5 00000000 		.4byte	.LASF19
+ 681 00d9 04       		.byte	0x4
+ 682 00da 9402     		.2byte	0x294
+ 683 00dc E0000000 		.4byte	0xe0
+ 684 00e0 08       		.uleb128 0x8
+ 685 00e1 A9000000 		.4byte	0xa9
+ 686 00e5 07       		.uleb128 0x7
+ 687 00e6 F9010000 		.4byte	.LASF20
+ 688 00ea 04       		.byte	0x4
+ 689 00eb A402     		.2byte	0x2a4
+ 690 00ed 8B000000 		.4byte	0x8b
+ 691 00f1 09       		.uleb128 0x9
+ 692 00f2 A4010000 		.4byte	.LASF21
+ 693 00f6 01       		.byte	0x1
+ 694 00f7 41       		.byte	0x41
+ 695 00f8 00000000 		.4byte	.LFB63
+ 696 00fc 20000000 		.4byte	.LFE63-.LFB63
+ 697 0100 01       		.uleb128 0x1
+ 698 0101 9C       		.byte	0x9c
+ 699 0102 0A       		.uleb128 0xa
+ 700 0103 AF000000 		.4byte	.LASF24
+ 701 0107 01       		.byte	0x1
+ 702 0108 6C       		.byte	0x6c
+ 703 0109 00000000 		.4byte	.LFB64
+ 704 010d 24000000 		.4byte	.LFE64-.LFB64
+ 705 0111 01       		.uleb128 0x1
+ 706 0112 9C       		.byte	0x9c
+ 707 0113 26010000 		.4byte	0x126
+ 708 0117 0B       		.uleb128 0xb
+ 709 0118 C6010000 		.4byte	.LASF26
+ 710 011c 01       		.byte	0x1
+ 711 011d 6C       		.byte	0x6c
+ 712 011e E5000000 		.4byte	0xe5
+ 713 0122 02       		.uleb128 0x2
+ 714 0123 91       		.byte	0x91
+ 715 0124 74       		.sleb128 -12
+ 716 0125 00       		.byte	0
+ 717 0126 09       		.uleb128 0x9
+ 718 0127 0A010000 		.4byte	.LASF22
+ 719 012b 01       		.byte	0x1
+ 720 012c 8A       		.byte	0x8a
+ 721 012d 00000000 		.4byte	.LFB65
+ 722 0131 18000000 		.4byte	.LFE65-.LFB65
+ 723 0135 01       		.uleb128 0x1
+ 724 0136 9C       		.byte	0x9c
+ 725 0137 09       		.uleb128 0x9
+ 726 0138 F2000000 		.4byte	.LASF23
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 21
+
+
+ 727 013c 01       		.byte	0x1
+ 728 013d A4       		.byte	0xa4
+ 729 013e 00000000 		.4byte	.LFB66
+ 730 0142 1C000000 		.4byte	.LFE66-.LFB66
+ 731 0146 01       		.uleb128 0x1
+ 732 0147 9C       		.byte	0x9c
+ 733 0148 0C       		.uleb128 0xc
+ 734 0149 C8020000 		.4byte	.LASF25
+ 735 014d 01       		.byte	0x1
+ 736 014e D0       		.byte	0xd0
+ 737 014f 00000000 		.4byte	.LFB67
+ 738 0153 24000000 		.4byte	.LFE67-.LFB67
+ 739 0157 01       		.uleb128 0x1
+ 740 0158 9C       		.byte	0x9c
+ 741 0159 7A010000 		.4byte	0x17a
+ 742 015d 0B       		.uleb128 0xb
+ 743 015e C6010000 		.4byte	.LASF26
+ 744 0162 01       		.byte	0x1
+ 745 0163 D0       		.byte	0xd0
+ 746 0164 E5000000 		.4byte	0xe5
+ 747 0168 02       		.uleb128 0x2
+ 748 0169 91       		.byte	0x91
+ 749 016a 6C       		.sleb128 -20
+ 750 016b 0D       		.uleb128 0xd
+ 751 016c 36020000 		.4byte	.LASF27
+ 752 0170 01       		.byte	0x1
+ 753 0171 D2       		.byte	0xd2
+ 754 0172 7A010000 		.4byte	0x17a
+ 755 0176 02       		.uleb128 0x2
+ 756 0177 91       		.byte	0x91
+ 757 0178 74       		.sleb128 -12
+ 758 0179 00       		.byte	0
+ 759 017a 05       		.uleb128 0x5
+ 760 017b 04       		.byte	0x4
+ 761 017c E5000000 		.4byte	0xe5
+ 762 0180 0E       		.uleb128 0xe
+ 763 0181 E0000000 		.4byte	.LASF30
+ 764 0185 01       		.byte	0x1
+ 765 0186 E8       		.byte	0xe8
+ 766 0187 E5000000 		.4byte	0xe5
+ 767 018b 00000000 		.4byte	.LFB68
+ 768 018f 20000000 		.4byte	.LFE68-.LFB68
+ 769 0193 01       		.uleb128 0x1
+ 770 0194 9C       		.byte	0x9c
+ 771 0195 A8010000 		.4byte	0x1a8
+ 772 0199 0D       		.uleb128 0xd
+ 773 019a 36020000 		.4byte	.LASF27
+ 774 019e 01       		.byte	0x1
+ 775 019f EA       		.byte	0xea
+ 776 01a0 7A010000 		.4byte	0x17a
+ 777 01a4 02       		.uleb128 0x2
+ 778 01a5 91       		.byte	0x91
+ 779 01a6 74       		.sleb128 -12
+ 780 01a7 00       		.byte	0
+ 781 01a8 0F       		.uleb128 0xf
+ 782 01a9 EF020000 		.4byte	.LASF28
+ 783 01ad 01       		.byte	0x1
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 22
+
+
+ 784 01ae 0A01     		.2byte	0x10a
+ 785 01b0 00000000 		.4byte	.LFB69
+ 786 01b4 24000000 		.4byte	.LFE69-.LFB69
+ 787 01b8 01       		.uleb128 0x1
+ 788 01b9 9C       		.byte	0x9c
+ 789 01ba CE010000 		.4byte	0x1ce
+ 790 01be 10       		.uleb128 0x10
+ 791 01bf 86010000 		.4byte	.LASF29
+ 792 01c3 01       		.byte	0x1
+ 793 01c4 0A01     		.2byte	0x10a
+ 794 01c6 9D000000 		.4byte	0x9d
+ 795 01ca 02       		.uleb128 0x2
+ 796 01cb 91       		.byte	0x91
+ 797 01cc 77       		.sleb128 -9
+ 798 01cd 00       		.byte	0
+ 799 01ce 11       		.uleb128 0x11
+ 800 01cf E5010000 		.4byte	.LASF31
+ 801 01d3 01       		.byte	0x1
+ 802 01d4 2001     		.2byte	0x120
+ 803 01d6 9D000000 		.4byte	0x9d
+ 804 01da 00000000 		.4byte	.LFB70
+ 805 01de 20000000 		.4byte	.LFE70-.LFB70
+ 806 01e2 01       		.uleb128 0x1
+ 807 01e3 9C       		.byte	0x9c
+ 808 01e4 F8010000 		.4byte	0x1f8
+ 809 01e8 12       		.uleb128 0x12
+ 810 01e9 86010000 		.4byte	.LASF29
+ 811 01ed 01       		.byte	0x1
+ 812 01ee 2201     		.2byte	0x122
+ 813 01f0 9D000000 		.4byte	0x9d
+ 814 01f4 02       		.uleb128 0x2
+ 815 01f5 91       		.byte	0x91
+ 816 01f6 77       		.sleb128 -9
+ 817 01f7 00       		.byte	0
+ 818 01f8 13       		.uleb128 0x13
+ 819 01f9 03030000 		.4byte	.LASF32
+ 820 01fd 01       		.byte	0x1
+ 821 01fe 3B01     		.2byte	0x13b
+ 822 0200 00000000 		.4byte	.LFB71
+ 823 0204 18000000 		.4byte	.LFE71-.LFB71
+ 824 0208 01       		.uleb128 0x1
+ 825 0209 9C       		.byte	0x9c
+ 826 020a 14       		.uleb128 0x14
+ 827 020b 94000000 		.4byte	.LASF39
+ 828 020f 01       		.byte	0x1
+ 829 0210 5001     		.2byte	0x150
+ 830 0212 9D000000 		.4byte	0x9d
+ 831 0216 00000000 		.4byte	.LFB72
+ 832 021a 24000000 		.4byte	.LFE72-.LFB72
+ 833 021e 01       		.uleb128 0x1
+ 834 021f 9C       		.byte	0x9c
+ 835 0220 13       		.uleb128 0x13
+ 836 0221 38010000 		.4byte	.LASF33
+ 837 0225 01       		.byte	0x1
+ 838 0226 6501     		.2byte	0x165
+ 839 0228 00000000 		.4byte	.LFB73
+ 840 022c 18000000 		.4byte	.LFE73-.LFB73
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 23
+
+
+ 841 0230 01       		.uleb128 0x1
+ 842 0231 9C       		.byte	0x9c
+ 843 0232 13       		.uleb128 0x13
+ 844 0233 17010000 		.4byte	.LASF34
+ 845 0237 01       		.byte	0x1
+ 846 0238 8001     		.2byte	0x180
+ 847 023a 00000000 		.4byte	.LFB74
+ 848 023e 18000000 		.4byte	.LFE74-.LFB74
+ 849 0242 01       		.uleb128 0x1
+ 850 0243 9C       		.byte	0x9c
+ 851 0244 13       		.uleb128 0x13
+ 852 0245 8F010000 		.4byte	.LASF35
+ 853 0249 01       		.byte	0x1
+ 854 024a 9901     		.2byte	0x199
+ 855 024c 00000000 		.4byte	.LFB75
+ 856 0250 18000000 		.4byte	.LFE75-.LFB75
+ 857 0254 01       		.uleb128 0x1
+ 858 0255 9C       		.byte	0x9c
+ 859 0256 15       		.uleb128 0x15
+ 860 0257 72010000 		.4byte	.LASF40
+ 861 025b 05       		.byte	0x5
+ 862 025c 1207     		.2byte	0x712
+ 863 025e 62020000 		.4byte	0x262
+ 864 0262 08       		.uleb128 0x8
+ 865 0263 92000000 		.4byte	0x92
+ 866 0267 00       		.byte	0
+ 867              		.section	.debug_abbrev,"",%progbits
+ 868              	.Ldebug_abbrev0:
+ 869 0000 01       		.uleb128 0x1
+ 870 0001 11       		.uleb128 0x11
+ 871 0002 01       		.byte	0x1
+ 872 0003 25       		.uleb128 0x25
+ 873 0004 0E       		.uleb128 0xe
+ 874 0005 13       		.uleb128 0x13
+ 875 0006 0B       		.uleb128 0xb
+ 876 0007 03       		.uleb128 0x3
+ 877 0008 0E       		.uleb128 0xe
+ 878 0009 1B       		.uleb128 0x1b
+ 879 000a 0E       		.uleb128 0xe
+ 880 000b 55       		.uleb128 0x55
+ 881 000c 17       		.uleb128 0x17
+ 882 000d 11       		.uleb128 0x11
+ 883 000e 01       		.uleb128 0x1
+ 884 000f 10       		.uleb128 0x10
+ 885 0010 17       		.uleb128 0x17
+ 886 0011 00       		.byte	0
+ 887 0012 00       		.byte	0
+ 888 0013 02       		.uleb128 0x2
+ 889 0014 24       		.uleb128 0x24
+ 890 0015 00       		.byte	0
+ 891 0016 0B       		.uleb128 0xb
+ 892 0017 0B       		.uleb128 0xb
+ 893 0018 3E       		.uleb128 0x3e
+ 894 0019 0B       		.uleb128 0xb
+ 895 001a 03       		.uleb128 0x3
+ 896 001b 08       		.uleb128 0x8
+ 897 001c 00       		.byte	0
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 24
+
+
+ 898 001d 00       		.byte	0
+ 899 001e 03       		.uleb128 0x3
+ 900 001f 24       		.uleb128 0x24
+ 901 0020 00       		.byte	0
+ 902 0021 0B       		.uleb128 0xb
+ 903 0022 0B       		.uleb128 0xb
+ 904 0023 3E       		.uleb128 0x3e
+ 905 0024 0B       		.uleb128 0xb
+ 906 0025 03       		.uleb128 0x3
+ 907 0026 0E       		.uleb128 0xe
+ 908 0027 00       		.byte	0
+ 909 0028 00       		.byte	0
+ 910 0029 04       		.uleb128 0x4
+ 911 002a 16       		.uleb128 0x16
+ 912 002b 00       		.byte	0
+ 913 002c 03       		.uleb128 0x3
+ 914 002d 0E       		.uleb128 0xe
+ 915 002e 3A       		.uleb128 0x3a
+ 916 002f 0B       		.uleb128 0xb
+ 917 0030 3B       		.uleb128 0x3b
+ 918 0031 0B       		.uleb128 0xb
+ 919 0032 49       		.uleb128 0x49
+ 920 0033 13       		.uleb128 0x13
+ 921 0034 00       		.byte	0
+ 922 0035 00       		.byte	0
+ 923 0036 05       		.uleb128 0x5
+ 924 0037 0F       		.uleb128 0xf
+ 925 0038 00       		.byte	0
+ 926 0039 0B       		.uleb128 0xb
+ 927 003a 0B       		.uleb128 0xb
+ 928 003b 49       		.uleb128 0x49
+ 929 003c 13       		.uleb128 0x13
+ 930 003d 00       		.byte	0
+ 931 003e 00       		.byte	0
+ 932 003f 06       		.uleb128 0x6
+ 933 0040 15       		.uleb128 0x15
+ 934 0041 00       		.byte	0
+ 935 0042 27       		.uleb128 0x27
+ 936 0043 19       		.uleb128 0x19
+ 937 0044 00       		.byte	0
+ 938 0045 00       		.byte	0
+ 939 0046 07       		.uleb128 0x7
+ 940 0047 16       		.uleb128 0x16
+ 941 0048 00       		.byte	0
+ 942 0049 03       		.uleb128 0x3
+ 943 004a 0E       		.uleb128 0xe
+ 944 004b 3A       		.uleb128 0x3a
+ 945 004c 0B       		.uleb128 0xb
+ 946 004d 3B       		.uleb128 0x3b
+ 947 004e 05       		.uleb128 0x5
+ 948 004f 49       		.uleb128 0x49
+ 949 0050 13       		.uleb128 0x13
+ 950 0051 00       		.byte	0
+ 951 0052 00       		.byte	0
+ 952 0053 08       		.uleb128 0x8
+ 953 0054 35       		.uleb128 0x35
+ 954 0055 00       		.byte	0
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 25
+
+
+ 955 0056 49       		.uleb128 0x49
+ 956 0057 13       		.uleb128 0x13
+ 957 0058 00       		.byte	0
+ 958 0059 00       		.byte	0
+ 959 005a 09       		.uleb128 0x9
+ 960 005b 2E       		.uleb128 0x2e
+ 961 005c 00       		.byte	0
+ 962 005d 3F       		.uleb128 0x3f
+ 963 005e 19       		.uleb128 0x19
+ 964 005f 03       		.uleb128 0x3
+ 965 0060 0E       		.uleb128 0xe
+ 966 0061 3A       		.uleb128 0x3a
+ 967 0062 0B       		.uleb128 0xb
+ 968 0063 3B       		.uleb128 0x3b
+ 969 0064 0B       		.uleb128 0xb
+ 970 0065 27       		.uleb128 0x27
+ 971 0066 19       		.uleb128 0x19
+ 972 0067 11       		.uleb128 0x11
+ 973 0068 01       		.uleb128 0x1
+ 974 0069 12       		.uleb128 0x12
+ 975 006a 06       		.uleb128 0x6
+ 976 006b 40       		.uleb128 0x40
+ 977 006c 18       		.uleb128 0x18
+ 978 006d 9642     		.uleb128 0x2116
+ 979 006f 19       		.uleb128 0x19
+ 980 0070 00       		.byte	0
+ 981 0071 00       		.byte	0
+ 982 0072 0A       		.uleb128 0xa
+ 983 0073 2E       		.uleb128 0x2e
+ 984 0074 01       		.byte	0x1
+ 985 0075 3F       		.uleb128 0x3f
+ 986 0076 19       		.uleb128 0x19
+ 987 0077 03       		.uleb128 0x3
+ 988 0078 0E       		.uleb128 0xe
+ 989 0079 3A       		.uleb128 0x3a
+ 990 007a 0B       		.uleb128 0xb
+ 991 007b 3B       		.uleb128 0x3b
+ 992 007c 0B       		.uleb128 0xb
+ 993 007d 27       		.uleb128 0x27
+ 994 007e 19       		.uleb128 0x19
+ 995 007f 11       		.uleb128 0x11
+ 996 0080 01       		.uleb128 0x1
+ 997 0081 12       		.uleb128 0x12
+ 998 0082 06       		.uleb128 0x6
+ 999 0083 40       		.uleb128 0x40
+ 1000 0084 18       		.uleb128 0x18
+ 1001 0085 9642     		.uleb128 0x2116
+ 1002 0087 19       		.uleb128 0x19
+ 1003 0088 01       		.uleb128 0x1
+ 1004 0089 13       		.uleb128 0x13
+ 1005 008a 00       		.byte	0
+ 1006 008b 00       		.byte	0
+ 1007 008c 0B       		.uleb128 0xb
+ 1008 008d 05       		.uleb128 0x5
+ 1009 008e 00       		.byte	0
+ 1010 008f 03       		.uleb128 0x3
+ 1011 0090 0E       		.uleb128 0xe
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 26
+
+
+ 1012 0091 3A       		.uleb128 0x3a
+ 1013 0092 0B       		.uleb128 0xb
+ 1014 0093 3B       		.uleb128 0x3b
+ 1015 0094 0B       		.uleb128 0xb
+ 1016 0095 49       		.uleb128 0x49
+ 1017 0096 13       		.uleb128 0x13
+ 1018 0097 02       		.uleb128 0x2
+ 1019 0098 18       		.uleb128 0x18
+ 1020 0099 00       		.byte	0
+ 1021 009a 00       		.byte	0
+ 1022 009b 0C       		.uleb128 0xc
+ 1023 009c 2E       		.uleb128 0x2e
+ 1024 009d 01       		.byte	0x1
+ 1025 009e 3F       		.uleb128 0x3f
+ 1026 009f 19       		.uleb128 0x19
+ 1027 00a0 03       		.uleb128 0x3
+ 1028 00a1 0E       		.uleb128 0xe
+ 1029 00a2 3A       		.uleb128 0x3a
+ 1030 00a3 0B       		.uleb128 0xb
+ 1031 00a4 3B       		.uleb128 0x3b
+ 1032 00a5 0B       		.uleb128 0xb
+ 1033 00a6 27       		.uleb128 0x27
+ 1034 00a7 19       		.uleb128 0x19
+ 1035 00a8 11       		.uleb128 0x11
+ 1036 00a9 01       		.uleb128 0x1
+ 1037 00aa 12       		.uleb128 0x12
+ 1038 00ab 06       		.uleb128 0x6
+ 1039 00ac 40       		.uleb128 0x40
+ 1040 00ad 18       		.uleb128 0x18
+ 1041 00ae 9742     		.uleb128 0x2117
+ 1042 00b0 19       		.uleb128 0x19
+ 1043 00b1 01       		.uleb128 0x1
+ 1044 00b2 13       		.uleb128 0x13
+ 1045 00b3 00       		.byte	0
+ 1046 00b4 00       		.byte	0
+ 1047 00b5 0D       		.uleb128 0xd
+ 1048 00b6 34       		.uleb128 0x34
+ 1049 00b7 00       		.byte	0
+ 1050 00b8 03       		.uleb128 0x3
+ 1051 00b9 0E       		.uleb128 0xe
+ 1052 00ba 3A       		.uleb128 0x3a
+ 1053 00bb 0B       		.uleb128 0xb
+ 1054 00bc 3B       		.uleb128 0x3b
+ 1055 00bd 0B       		.uleb128 0xb
+ 1056 00be 49       		.uleb128 0x49
+ 1057 00bf 13       		.uleb128 0x13
+ 1058 00c0 02       		.uleb128 0x2
+ 1059 00c1 18       		.uleb128 0x18
+ 1060 00c2 00       		.byte	0
+ 1061 00c3 00       		.byte	0
+ 1062 00c4 0E       		.uleb128 0xe
+ 1063 00c5 2E       		.uleb128 0x2e
+ 1064 00c6 01       		.byte	0x1
+ 1065 00c7 3F       		.uleb128 0x3f
+ 1066 00c8 19       		.uleb128 0x19
+ 1067 00c9 03       		.uleb128 0x3
+ 1068 00ca 0E       		.uleb128 0xe
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 27
+
+
+ 1069 00cb 3A       		.uleb128 0x3a
+ 1070 00cc 0B       		.uleb128 0xb
+ 1071 00cd 3B       		.uleb128 0x3b
+ 1072 00ce 0B       		.uleb128 0xb
+ 1073 00cf 27       		.uleb128 0x27
+ 1074 00d0 19       		.uleb128 0x19
+ 1075 00d1 49       		.uleb128 0x49
+ 1076 00d2 13       		.uleb128 0x13
+ 1077 00d3 11       		.uleb128 0x11
+ 1078 00d4 01       		.uleb128 0x1
+ 1079 00d5 12       		.uleb128 0x12
+ 1080 00d6 06       		.uleb128 0x6
+ 1081 00d7 40       		.uleb128 0x40
+ 1082 00d8 18       		.uleb128 0x18
+ 1083 00d9 9742     		.uleb128 0x2117
+ 1084 00db 19       		.uleb128 0x19
+ 1085 00dc 01       		.uleb128 0x1
+ 1086 00dd 13       		.uleb128 0x13
+ 1087 00de 00       		.byte	0
+ 1088 00df 00       		.byte	0
+ 1089 00e0 0F       		.uleb128 0xf
+ 1090 00e1 2E       		.uleb128 0x2e
+ 1091 00e2 01       		.byte	0x1
+ 1092 00e3 3F       		.uleb128 0x3f
+ 1093 00e4 19       		.uleb128 0x19
+ 1094 00e5 03       		.uleb128 0x3
+ 1095 00e6 0E       		.uleb128 0xe
+ 1096 00e7 3A       		.uleb128 0x3a
+ 1097 00e8 0B       		.uleb128 0xb
+ 1098 00e9 3B       		.uleb128 0x3b
+ 1099 00ea 05       		.uleb128 0x5
+ 1100 00eb 27       		.uleb128 0x27
+ 1101 00ec 19       		.uleb128 0x19
+ 1102 00ed 11       		.uleb128 0x11
+ 1103 00ee 01       		.uleb128 0x1
+ 1104 00ef 12       		.uleb128 0x12
+ 1105 00f0 06       		.uleb128 0x6
+ 1106 00f1 40       		.uleb128 0x40
+ 1107 00f2 18       		.uleb128 0x18
+ 1108 00f3 9742     		.uleb128 0x2117
+ 1109 00f5 19       		.uleb128 0x19
+ 1110 00f6 01       		.uleb128 0x1
+ 1111 00f7 13       		.uleb128 0x13
+ 1112 00f8 00       		.byte	0
+ 1113 00f9 00       		.byte	0
+ 1114 00fa 10       		.uleb128 0x10
+ 1115 00fb 05       		.uleb128 0x5
+ 1116 00fc 00       		.byte	0
+ 1117 00fd 03       		.uleb128 0x3
+ 1118 00fe 0E       		.uleb128 0xe
+ 1119 00ff 3A       		.uleb128 0x3a
+ 1120 0100 0B       		.uleb128 0xb
+ 1121 0101 3B       		.uleb128 0x3b
+ 1122 0102 05       		.uleb128 0x5
+ 1123 0103 49       		.uleb128 0x49
+ 1124 0104 13       		.uleb128 0x13
+ 1125 0105 02       		.uleb128 0x2
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 28
+
+
+ 1126 0106 18       		.uleb128 0x18
+ 1127 0107 00       		.byte	0
+ 1128 0108 00       		.byte	0
+ 1129 0109 11       		.uleb128 0x11
+ 1130 010a 2E       		.uleb128 0x2e
+ 1131 010b 01       		.byte	0x1
+ 1132 010c 3F       		.uleb128 0x3f
+ 1133 010d 19       		.uleb128 0x19
+ 1134 010e 03       		.uleb128 0x3
+ 1135 010f 0E       		.uleb128 0xe
+ 1136 0110 3A       		.uleb128 0x3a
+ 1137 0111 0B       		.uleb128 0xb
+ 1138 0112 3B       		.uleb128 0x3b
+ 1139 0113 05       		.uleb128 0x5
+ 1140 0114 27       		.uleb128 0x27
+ 1141 0115 19       		.uleb128 0x19
+ 1142 0116 49       		.uleb128 0x49
+ 1143 0117 13       		.uleb128 0x13
+ 1144 0118 11       		.uleb128 0x11
+ 1145 0119 01       		.uleb128 0x1
+ 1146 011a 12       		.uleb128 0x12
+ 1147 011b 06       		.uleb128 0x6
+ 1148 011c 40       		.uleb128 0x40
+ 1149 011d 18       		.uleb128 0x18
+ 1150 011e 9742     		.uleb128 0x2117
+ 1151 0120 19       		.uleb128 0x19
+ 1152 0121 01       		.uleb128 0x1
+ 1153 0122 13       		.uleb128 0x13
+ 1154 0123 00       		.byte	0
+ 1155 0124 00       		.byte	0
+ 1156 0125 12       		.uleb128 0x12
+ 1157 0126 34       		.uleb128 0x34
+ 1158 0127 00       		.byte	0
+ 1159 0128 03       		.uleb128 0x3
+ 1160 0129 0E       		.uleb128 0xe
+ 1161 012a 3A       		.uleb128 0x3a
+ 1162 012b 0B       		.uleb128 0xb
+ 1163 012c 3B       		.uleb128 0x3b
+ 1164 012d 05       		.uleb128 0x5
+ 1165 012e 49       		.uleb128 0x49
+ 1166 012f 13       		.uleb128 0x13
+ 1167 0130 02       		.uleb128 0x2
+ 1168 0131 18       		.uleb128 0x18
+ 1169 0132 00       		.byte	0
+ 1170 0133 00       		.byte	0
+ 1171 0134 13       		.uleb128 0x13
+ 1172 0135 2E       		.uleb128 0x2e
+ 1173 0136 00       		.byte	0
+ 1174 0137 3F       		.uleb128 0x3f
+ 1175 0138 19       		.uleb128 0x19
+ 1176 0139 03       		.uleb128 0x3
+ 1177 013a 0E       		.uleb128 0xe
+ 1178 013b 3A       		.uleb128 0x3a
+ 1179 013c 0B       		.uleb128 0xb
+ 1180 013d 3B       		.uleb128 0x3b
+ 1181 013e 05       		.uleb128 0x5
+ 1182 013f 27       		.uleb128 0x27
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 29
+
+
+ 1183 0140 19       		.uleb128 0x19
+ 1184 0141 11       		.uleb128 0x11
+ 1185 0142 01       		.uleb128 0x1
+ 1186 0143 12       		.uleb128 0x12
+ 1187 0144 06       		.uleb128 0x6
+ 1188 0145 40       		.uleb128 0x40
+ 1189 0146 18       		.uleb128 0x18
+ 1190 0147 9742     		.uleb128 0x2117
+ 1191 0149 19       		.uleb128 0x19
+ 1192 014a 00       		.byte	0
+ 1193 014b 00       		.byte	0
+ 1194 014c 14       		.uleb128 0x14
+ 1195 014d 2E       		.uleb128 0x2e
+ 1196 014e 00       		.byte	0
+ 1197 014f 3F       		.uleb128 0x3f
+ 1198 0150 19       		.uleb128 0x19
+ 1199 0151 03       		.uleb128 0x3
+ 1200 0152 0E       		.uleb128 0xe
+ 1201 0153 3A       		.uleb128 0x3a
+ 1202 0154 0B       		.uleb128 0xb
+ 1203 0155 3B       		.uleb128 0x3b
+ 1204 0156 05       		.uleb128 0x5
+ 1205 0157 27       		.uleb128 0x27
+ 1206 0158 19       		.uleb128 0x19
+ 1207 0159 49       		.uleb128 0x49
+ 1208 015a 13       		.uleb128 0x13
+ 1209 015b 11       		.uleb128 0x11
+ 1210 015c 01       		.uleb128 0x1
+ 1211 015d 12       		.uleb128 0x12
+ 1212 015e 06       		.uleb128 0x6
+ 1213 015f 40       		.uleb128 0x40
+ 1214 0160 18       		.uleb128 0x18
+ 1215 0161 9742     		.uleb128 0x2117
+ 1216 0163 19       		.uleb128 0x19
+ 1217 0164 00       		.byte	0
+ 1218 0165 00       		.byte	0
+ 1219 0166 15       		.uleb128 0x15
+ 1220 0167 34       		.uleb128 0x34
+ 1221 0168 00       		.byte	0
+ 1222 0169 03       		.uleb128 0x3
+ 1223 016a 0E       		.uleb128 0xe
+ 1224 016b 3A       		.uleb128 0x3a
+ 1225 016c 0B       		.uleb128 0xb
+ 1226 016d 3B       		.uleb128 0x3b
+ 1227 016e 05       		.uleb128 0x5
+ 1228 016f 49       		.uleb128 0x49
+ 1229 0170 13       		.uleb128 0x13
+ 1230 0171 3F       		.uleb128 0x3f
+ 1231 0172 19       		.uleb128 0x19
+ 1232 0173 3C       		.uleb128 0x3c
+ 1233 0174 19       		.uleb128 0x19
+ 1234 0175 00       		.byte	0
+ 1235 0176 00       		.byte	0
+ 1236 0177 00       		.byte	0
+ 1237              		.section	.debug_aranges,"",%progbits
+ 1238 0000 7C000000 		.4byte	0x7c
+ 1239 0004 0200     		.2byte	0x2
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 30
+
+
+ 1240 0006 00000000 		.4byte	.Ldebug_info0
+ 1241 000a 04       		.byte	0x4
+ 1242 000b 00       		.byte	0
+ 1243 000c 0000     		.2byte	0
+ 1244 000e 0000     		.2byte	0
+ 1245 0010 00000000 		.4byte	.LFB63
+ 1246 0014 20000000 		.4byte	.LFE63-.LFB63
+ 1247 0018 00000000 		.4byte	.LFB64
+ 1248 001c 24000000 		.4byte	.LFE64-.LFB64
+ 1249 0020 00000000 		.4byte	.LFB65
+ 1250 0024 18000000 		.4byte	.LFE65-.LFB65
+ 1251 0028 00000000 		.4byte	.LFB66
+ 1252 002c 1C000000 		.4byte	.LFE66-.LFB66
+ 1253 0030 00000000 		.4byte	.LFB67
+ 1254 0034 24000000 		.4byte	.LFE67-.LFB67
+ 1255 0038 00000000 		.4byte	.LFB68
+ 1256 003c 20000000 		.4byte	.LFE68-.LFB68
+ 1257 0040 00000000 		.4byte	.LFB69
+ 1258 0044 24000000 		.4byte	.LFE69-.LFB69
+ 1259 0048 00000000 		.4byte	.LFB70
+ 1260 004c 20000000 		.4byte	.LFE70-.LFB70
+ 1261 0050 00000000 		.4byte	.LFB71
+ 1262 0054 18000000 		.4byte	.LFE71-.LFB71
+ 1263 0058 00000000 		.4byte	.LFB72
+ 1264 005c 24000000 		.4byte	.LFE72-.LFB72
+ 1265 0060 00000000 		.4byte	.LFB73
+ 1266 0064 18000000 		.4byte	.LFE73-.LFB73
+ 1267 0068 00000000 		.4byte	.LFB74
+ 1268 006c 18000000 		.4byte	.LFE74-.LFB74
+ 1269 0070 00000000 		.4byte	.LFB75
+ 1270 0074 18000000 		.4byte	.LFE75-.LFB75
+ 1271 0078 00000000 		.4byte	0
+ 1272 007c 00000000 		.4byte	0
+ 1273              		.section	.debug_ranges,"",%progbits
+ 1274              	.Ldebug_ranges0:
+ 1275 0000 00000000 		.4byte	.LFB63
+ 1276 0004 20000000 		.4byte	.LFE63
+ 1277 0008 00000000 		.4byte	.LFB64
+ 1278 000c 24000000 		.4byte	.LFE64
+ 1279 0010 00000000 		.4byte	.LFB65
+ 1280 0014 18000000 		.4byte	.LFE65
+ 1281 0018 00000000 		.4byte	.LFB66
+ 1282 001c 1C000000 		.4byte	.LFE66
+ 1283 0020 00000000 		.4byte	.LFB67
+ 1284 0024 24000000 		.4byte	.LFE67
+ 1285 0028 00000000 		.4byte	.LFB68
+ 1286 002c 20000000 		.4byte	.LFE68
+ 1287 0030 00000000 		.4byte	.LFB69
+ 1288 0034 24000000 		.4byte	.LFE69
+ 1289 0038 00000000 		.4byte	.LFB70
+ 1290 003c 20000000 		.4byte	.LFE70
+ 1291 0040 00000000 		.4byte	.LFB71
+ 1292 0044 18000000 		.4byte	.LFE71
+ 1293 0048 00000000 		.4byte	.LFB72
+ 1294 004c 24000000 		.4byte	.LFE72
+ 1295 0050 00000000 		.4byte	.LFB73
+ 1296 0054 18000000 		.4byte	.LFE73
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 31
+
+
+ 1297 0058 00000000 		.4byte	.LFB74
+ 1298 005c 18000000 		.4byte	.LFE74
+ 1299 0060 00000000 		.4byte	.LFB75
+ 1300 0064 18000000 		.4byte	.LFE75
+ 1301 0068 00000000 		.4byte	0
+ 1302 006c 00000000 		.4byte	0
+ 1303              		.section	.debug_line,"",%progbits
+ 1304              	.Ldebug_line0:
+ 1305 0000 5C020000 		.section	.debug_str,"MS",%progbits,1
+ 1305      02004F01 
+ 1305      00000201 
+ 1305      FB0E0D00 
+ 1305      01010101 
+ 1306              	.LASF19:
+ 1307 0000 72656733 		.ascii	"reg32\000"
+ 1307      3200
+ 1308              	.LASF36:
+ 1309 0006 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1309      43313120 
+ 1309      352E342E 
+ 1309      31203230 
+ 1309      31363036 
+ 1310 0039 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1310      20726576 
+ 1310      6973696F 
+ 1310      6E203233 
+ 1310      37373135 
+ 1311 006c 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1311      66756E63 
+ 1311      74696F6E 
+ 1311      2D736563 
+ 1311      74696F6E 
+ 1312              	.LASF39:
+ 1313 0094 6973725F 		.ascii	"isr_SPI_GetState\000"
+ 1313      5350495F 
+ 1313      47657453 
+ 1313      74617465 
+ 1313      00
+ 1314              	.LASF12:
+ 1315 00a5 5F5F696E 		.ascii	"__int32_t\000"
+ 1315      7433325F 
+ 1315      7400
+ 1316              	.LASF24:
+ 1317 00af 6973725F 		.ascii	"isr_SPI_StartEx\000"
+ 1317      5350495F 
+ 1317      53746172 
+ 1317      74457800 
+ 1318              	.LASF37:
+ 1319 00bf 47656E65 		.ascii	"Generated_Source\\PSoC5\\isr_SPI.c\000"
+ 1319      72617465 
+ 1319      645F536F 
+ 1319      75726365 
+ 1319      5C50536F 
+ 1320              	.LASF30:
+ 1321 00e0 6973725F 		.ascii	"isr_SPI_GetVector\000"
+ 1321      5350495F 
+ 1321      47657456 
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 32
+
+
+ 1321      6563746F 
+ 1321      7200
+ 1322              	.LASF23:
+ 1323 00f2 6973725F 		.ascii	"isr_SPI_Interrupt\000"
+ 1323      5350495F 
+ 1323      496E7465 
+ 1323      72727570 
+ 1323      7400
+ 1324              	.LASF16:
+ 1325 0104 666C6F61 		.ascii	"float\000"
+ 1325      7400
+ 1326              	.LASF22:
+ 1327 010a 6973725F 		.ascii	"isr_SPI_Stop\000"
+ 1327      5350495F 
+ 1327      53746F70 
+ 1327      00
+ 1328              	.LASF34:
+ 1329 0117 6973725F 		.ascii	"isr_SPI_SetPending\000"
+ 1329      5350495F 
+ 1329      53657450 
+ 1329      656E6469 
+ 1329      6E6700
+ 1330              	.LASF4:
+ 1331 012a 756E7369 		.ascii	"unsigned char\000"
+ 1331      676E6564 
+ 1331      20636861 
+ 1331      7200
+ 1332              	.LASF33:
+ 1333 0138 6973725F 		.ascii	"isr_SPI_Disable\000"
+ 1333      5350495F 
+ 1333      44697361 
+ 1333      626C6500 
+ 1334              	.LASF18:
+ 1335 0148 72656738 		.ascii	"reg8\000"
+ 1335      00
+ 1336              	.LASF8:
+ 1337 014d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1337      20756E73 
+ 1337      69676E65 
+ 1337      6420696E 
+ 1337      7400
+ 1338              	.LASF6:
+ 1339 015f 73686F72 		.ascii	"short unsigned int\000"
+ 1339      7420756E 
+ 1339      7369676E 
+ 1339      65642069 
+ 1339      6E7400
+ 1340              	.LASF40:
+ 1341 0172 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1341      52784275 
+ 1341      66666572 
+ 1341      00
+ 1342              	.LASF17:
+ 1343 017f 646F7562 		.ascii	"double\000"
+ 1343      6C6500
+ 1344              	.LASF29:
+ 1345 0186 7072696F 		.ascii	"priority\000"
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 33
+
+
+ 1345      72697479 
+ 1345      00
+ 1346              	.LASF35:
+ 1347 018f 6973725F 		.ascii	"isr_SPI_ClearPending\000"
+ 1347      5350495F 
+ 1347      436C6561 
+ 1347      7250656E 
+ 1347      64696E67 
+ 1348              	.LASF21:
+ 1349 01a4 6973725F 		.ascii	"isr_SPI_Start\000"
+ 1349      5350495F 
+ 1349      53746172 
+ 1349      7400
+ 1350              	.LASF15:
+ 1351 01b2 75696E74 		.ascii	"uint32\000"
+ 1351      333200
+ 1352              	.LASF0:
+ 1353 01b9 756E7369 		.ascii	"unsigned int\000"
+ 1353      676E6564 
+ 1353      20696E74 
+ 1353      00
+ 1354              	.LASF26:
+ 1355 01c6 61646472 		.ascii	"address\000"
+ 1355      65737300 
+ 1356              	.LASF9:
+ 1357 01ce 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1357      206C6F6E 
+ 1357      6720756E 
+ 1357      7369676E 
+ 1357      65642069 
+ 1358              	.LASF31:
+ 1359 01e5 6973725F 		.ascii	"isr_SPI_GetPriority\000"
+ 1359      5350495F 
+ 1359      47657450 
+ 1359      72696F72 
+ 1359      69747900 
+ 1360              	.LASF20:
+ 1361 01f9 63796973 		.ascii	"cyisraddress\000"
+ 1361      72616464 
+ 1361      72657373 
+ 1361      00
+ 1362              	.LASF3:
+ 1363 0206 7369676E 		.ascii	"signed char\000"
+ 1363      65642063 
+ 1363      68617200 
+ 1364              	.LASF13:
+ 1365 0212 696E7433 		.ascii	"int32_t\000"
+ 1365      325F7400 
+ 1366              	.LASF10:
+ 1367 021a 73697A65 		.ascii	"sizetype\000"
+ 1367      74797065 
+ 1367      00
+ 1368              	.LASF1:
+ 1369 0223 6C6F6E67 		.ascii	"long long int\000"
+ 1369      206C6F6E 
+ 1369      6720696E 
+ 1369      7400
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 34
+
+
+ 1370              	.LASF11:
+ 1371 0231 63686172 		.ascii	"char\000"
+ 1371      00
+ 1372              	.LASF27:
+ 1373 0236 72616D56 		.ascii	"ramVectorTable\000"
+ 1373      6563746F 
+ 1373      72546162 
+ 1373      6C6500
+ 1374              	.LASF38:
+ 1375 0245 433A5C55 		.ascii	"C:\\UserData\\z004c8dn\\OneDrive - Siemens AG\\Doku"
+ 1375      73657244 
+ 1375      6174615C 
+ 1375      7A303034 
+ 1375      6338646E 
+ 1376 0274 6D656E74 		.ascii	"mente\\PSoC Creator\\AndreasBothPSoC5Serial\\Andrea"
+ 1376      655C5053 
+ 1376      6F432043 
+ 1376      72656174 
+ 1376      6F725C41 
+ 1377 02a4 73426F74 		.ascii	"sBothPSoC5DAQ.cydsn\000"
+ 1377      6850536F 
+ 1377      43354441 
+ 1377      512E6379 
+ 1377      64736E00 
+ 1378              	.LASF5:
+ 1379 02b8 73686F72 		.ascii	"short int\000"
+ 1379      7420696E 
+ 1379      7400
+ 1380              	.LASF14:
+ 1381 02c2 75696E74 		.ascii	"uint8\000"
+ 1381      3800
+ 1382              	.LASF25:
+ 1383 02c8 6973725F 		.ascii	"isr_SPI_SetVector\000"
+ 1383      5350495F 
+ 1383      53657456 
+ 1383      6563746F 
+ 1383      7200
+ 1384              	.LASF7:
+ 1385 02da 6C6F6E67 		.ascii	"long int\000"
+ 1385      20696E74 
+ 1385      00
+ 1386              	.LASF2:
+ 1387 02e3 6C6F6E67 		.ascii	"long double\000"
+ 1387      20646F75 
+ 1387      626C6500 
+ 1388              	.LASF28:
+ 1389 02ef 6973725F 		.ascii	"isr_SPI_SetPriority\000"
+ 1389      5350495F 
+ 1389      53657450 
+ 1389      72696F72 
+ 1389      69747900 
+ 1390              	.LASF32:
+ 1391 0303 6973725F 		.ascii	"isr_SPI_Enable\000"
+ 1391      5350495F 
+ 1391      456E6162 
+ 1391      6C6500
+ 1392              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ARM GAS  C:\Users\z004c8dn\AppData\Local\Temp\ccZvNTSg.s 			page 35
+
+
